@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./App
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    networks:
+      - app-network
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./Database:/app/Database
+    environment:
+      - DB_PATH=/app/Database
+      - IDENTITY_DB_PATH=/app/Database/Identity.db
+      - BUSINESS_DB_PATH=/app/Database/Business.db
+      - IDENTITY_MIGRATIONS_PATH=/app/Database/migrations/identity
+      - BUSINESS_MIGRATIONS_PATH=/app/Database/migrations/business
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
