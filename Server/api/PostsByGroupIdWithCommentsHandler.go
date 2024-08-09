@@ -88,7 +88,7 @@ func (h *PostsByGroupIdWithCommentsHandler) get(w http.ResponseWriter, r *http.R
 		var transportComments []transport.CommentTransport
 		for _, comment := range postComments {
 			// Fetch and cache the comment author's user details
-			user, exists := userCache[comment.UserId]
+			user, exists = userCache[comment.UserId]
 			if !exists {
 				user, err := h.Repo.GetUserById(comment.UserId)
 				if err != nil {
